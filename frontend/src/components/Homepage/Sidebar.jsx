@@ -8,7 +8,6 @@ import {
   faMusic,
   faTicket,
   faHeart,
-  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = ({ currentView, setCurrentView }) => {
@@ -36,16 +35,8 @@ const Sidebar = ({ currentView, setCurrentView }) => {
     },
   ];
 
-  const playlists = [
-    "Recently Played",
-    "Trending Now",
-    "Rock Concerts",
-    "Electronic Shows",
-    "Jazz Nights",
-  ];
-
   return (
-    <div className="sidebar">
+    <aside className="sidebar" aria-label="Primary">
       <div className="sidebar-header">
         <GradientText
           className="sidebar-logo"
@@ -57,14 +48,15 @@ const Sidebar = ({ currentView, setCurrentView }) => {
         </GradientText>
       </div>
 
-      <nav className="sidebar-nav">
+      <nav className="sidebar-nav" role="navigation">
         <ul className="nav-list">
           {menuItems.map((item) => (
-            <li key={item.id}>
+            <li key={item.id} className="nav-li">
               <button
                 className={`nav-item ${
                   currentView === item.id ? "active" : ""
                 }`}
+                aria-current={currentView === item.id ? "page" : undefined}
                 onClick={() => setCurrentView(item.id)}
               >
                 <span className="nav-icon">{item.icon}</span>
@@ -75,29 +67,13 @@ const Sidebar = ({ currentView, setCurrentView }) => {
         </ul>
       </nav>
 
-      <div className="sidebar-section">
-        <h3 className="section-title">Library</h3>
-        <ul className="playlist-list">
-          {playlists.map((playlist, index) => (
-            <li key={index}>
-              <button className="playlist-item">
-                <div className="playlist-icon">
-                  <FontAwesomeIcon icon={faClock} />
-                </div>
-                <span className="playlist-name">{playlist}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
       <div className="sidebar-footer">
         <button className="create-playlist-btn">
           <span className="plus-icon">+</span>
           Create Playlist
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
 
