@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import EventCard from './EventCard';
 import './MainContent.css';
 import { fetchArtistImage } from '../../utils/fetchArtistImage';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const MainContent = ({ currentView, searchQuery }) => {
   // Mock event data (no static images)

@@ -107,6 +107,11 @@
   background: #282828;
 }
 
+.notification-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 .user-menu {
   position: relative;
 }
@@ -116,7 +121,6 @@
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: #1db954;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -127,7 +131,7 @@
 }
 
 .user-avatar:hover {
-  background: #1ed760;
+  background: grey;
 }
 
 .user-dropdown {
