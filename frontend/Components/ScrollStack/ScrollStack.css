@@ -26,7 +26,7 @@
   will-change: transform, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
   height: 20rem;
   width: 100%;
   margin: 30px 0;
@@ -37,6 +37,10 @@
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   position: relative;
+  /* Make background opaque */
+  background: rgba(0, 0, 0, 0.9); /* Dark opaque background */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .scroll-stack-end {

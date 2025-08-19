@@ -2,17 +2,15 @@ import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import anime from "animejs";
 import "./LandingPage.css";
-import Particles from "../../Backgrounds/Particles/Particles"; // Replace DarkVeil import
+import Particles from "../../Backgrounds/Particles/Particles";
 import GradientText from "../../Reactbits/GradientText/GradientText";
 import SpotlightCard from "../../Components/SpotlightCard/SpotlightCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMusic,
-  faTicket,
-  faLock,
-  
-} from "@fortawesome/free-solid-svg-icons";
-import ScrollStack, { ScrollStackItem } from '../../Components/ScrollStack/ScrollStack';
+import { faMusic, faTicket, faLock } from "@fortawesome/free-solid-svg-icons";
+import ScrollStack, {
+  ScrollStackItem,
+} from "../../Components/ScrollStack/ScrollStack";
+import BlurText from "../../Reactbits/BlurText/BlurText";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -31,6 +29,10 @@ const LandingPage = () => {
 
   const handleStartJourney = () => {
     navigate("/signup");
+  };
+
+  const handleFeaturesAnimationComplete = () => {
+    console.log("Features section title animation completed!");
   };
 
   useEffect(() => {
@@ -187,13 +189,23 @@ const LandingPage = () => {
       {/* Features Section */}
       <section className="features-section" ref={featuresRef}>
         <div className="container">
-          <h2 className="section-title">Why Choose ZetaBeats?</h2>
+          <BlurText
+            text="Why Choose ZetaBeats?"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            onAnimationComplete={handleFeaturesAnimationComplete}
+            className="section-title"
+            as="h2"
+          />
           <div className="features-grid">
             <SpotlightCard
               className="feature-card"
               spotlightColor="rgba(64, 255, 170, 0.3)"
             >
-              <div className="feature-icon"><FontAwesomeIcon icon={faMusic} /></div>
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faMusic} />
+              </div>
               <h3>Priority Queue System</h3>
               <p>
                 Your Spotify listening time determines your ticket priority.
@@ -205,7 +217,9 @@ const LandingPage = () => {
               className="feature-card"
               spotlightColor="rgba(64, 121, 255, 0.3)"
             >
-              <div className="feature-icon"><FontAwesomeIcon icon={faTicket} /></div>
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faTicket} />
+              </div>
               <h3>NFT Tickets</h3>
               <p>
                 Own your concert experience as a unique NFT. Trade, keep, or
@@ -229,7 +243,9 @@ const LandingPage = () => {
               className="feature-card"
               spotlightColor="rgba(138, 43, 226, 0.3)"
             >
-              <div className="feature-icon"><FontAwesomeIcon icon={faLock} /></div>
+              <div className="feature-icon">
+                <FontAwesomeIcon icon={faLock} />
+              </div>
               <h3>Secure & Transparent</h3>
               <p>
                 Blockchain-secured transactions ensure fairness and prevent
@@ -241,11 +257,10 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="how-it-works-section" ref={howItWorksRef}>
-        <div className="container">
+      <div className="how-it-works-section" ref={howItWorksRef}>
+        <ScrollStack className="how-it-works-section" ref={howItWorksRef}>
           <h2 className="section-title">How It Works</h2>
-          
-          <div className="steps-container">
+          <ScrollStackItem>
             <div className="step-card">
               <div className="step-number">1</div>
               <h3>Connect Spotify</h3>
@@ -254,6 +269,8 @@ const LandingPage = () => {
                 your fan score.
               </p>
             </div>
+          </ScrollStackItem>
+          <ScrollStackItem>
             <div className="step-card">
               <div className="step-number">2</div>
               <h3>Browse Events</h3>
@@ -262,6 +279,8 @@ const LandingPage = () => {
                 artists.
               </p>
             </div>
+          </ScrollStackItem>
+          <ScrollStackItem>
             <div className="step-card">
               <div className="step-number">3</div>
               <h3>Join Queue</h3>
@@ -270,6 +289,8 @@ const LandingPage = () => {
                 dedication.
               </p>
             </div>
+          </ScrollStackItem>
+          <ScrollStackItem>
             <div className="step-card">
               <div className="step-number">4</div>
               <h3>Purchase Tickets</h3>
@@ -278,9 +299,9 @@ const LandingPage = () => {
                 NFTs.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
+          </ScrollStackItem>
+        </ScrollStack>
+      </div>
 
       {/* CTA Section */}
       <section className="cta-section" ref={ctaRef}>
