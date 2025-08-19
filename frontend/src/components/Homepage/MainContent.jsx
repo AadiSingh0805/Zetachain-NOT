@@ -1,38 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EventCard from './EventCard';
 import './MainContent.css';
+import { fetchArtistImage } from '../../utils/fetchArtistImage';
 
 const MainContent = ({ currentView, searchQuery }) => {
-  // Mock data for concerts/events
-  const mockEvents = {
+  // Mock event data (no static images)
+  const initialEvents = {
     trending: [
       {
         id: 1,
         artist: 'The Weeknd',
         title: 'After Hours Tour',
-        image: 'https://via.placeholder.com/300x300/ff6b6b/ffffff?text=The+Weeknd',
         date: '2024-03-15',
         venue: 'Madison Square Garden',
         price: '0.5 ETH',
         available: 234,
-        songs: ['Blinding Lights', 'Can\'t Feel My Face', 'The Hills']
+        songs: ['Blinding Lights', "Can\'t Feel My Face", 'The Hills']
       },
       {
         id: 2,
         artist: 'Dua Lipa',
         title: 'Future Nostalgia Tour',
-        image: 'https://via.placeholder.com/300x300/667eea/ffffff?text=Dua+Lipa',
         date: '2024-03-20',
         venue: 'Crypto.com Arena',
         price: '0.3 ETH',
         available: 156,
-        songs: ['Levitating', 'Don\'t Start Now', 'Physical']
+        songs: ['Levitating', "Don\'t Start Now", 'Physical']
       },
       {
         id: 3,
         artist: 'Travis Scott',
         title: 'Utopia World Tour',
-        image: 'https://via.placeholder.com/300x300/feca57/ffffff?text=Travis+Scott',
         date: '2024-03-25',
         venue: 'Barclays Center',
         price: '0.7 ETH',
@@ -45,7 +43,6 @@ const MainContent = ({ currentView, searchQuery }) => {
         id: 4,
         artist: 'Billie Eilish',
         title: 'Happier Than Ever Tour',
-        image: 'https://via.placeholder.com/300x300/48cae4/ffffff?text=Billie+Eilish',
         date: '2024-04-01',
         venue: 'The Forum',
         price: '0.4 ETH',
@@ -56,7 +53,6 @@ const MainContent = ({ currentView, searchQuery }) => {
         id: 5,
         artist: 'Post Malone',
         title: 'Twelve Carat Tour',
-        image: 'https://via.placeholder.com/300x300/f72585/ffffff?text=Post+Malone',
         date: '2024-04-05',
         venue: 'T-Mobile Arena',
         price: '0.6 ETH',
@@ -69,7 +65,6 @@ const MainContent = ({ currentView, searchQuery }) => {
         id: 6,
         artist: 'Arctic Monkeys',
         title: 'The Car Tour',
-        image: 'https://via.placeholder.com/300x300/7209b7/ffffff?text=Arctic+Monkeys',
         date: '2024-04-10',
         venue: 'Red Rocks Amphitheatre',
         price: '0.45 ETH',
@@ -79,14 +74,42 @@ const MainContent = ({ currentView, searchQuery }) => {
     ]
   };
 
+  const [events, setEvents] = useState(initialEvents);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const updated = { ...initialEvents };
+
+      for (const section of Object.keys(updated)) {
+        updated[section] = await Promise.all(
+          updated[section].map(async (event) => {
+            const image = await fetchArtistImage(event.artist);
+            return { ...event, image };
+          })
+        );
+      }
+
+      setEvents(updated);
+    };
+
+    loadImages();
+  }, []);
+
   const renderHomeContent = () => (
     <div className="home-content">
       <div className="greeting-section">
         <h1 className="greeting">Good evening</h1>
         <div className="quick-picks">
-          {mockEvents.trending.slice(0, 6).map((event) => (
+          {events.trending.slice(0, 6).map((event) => (
             <div key={event.id} className="quick-pick-card">
-              <img src={event.image} alt={event.artist} className="quick-pick-image" />
+              <img
+                src={
+                  event.image ||
+                  `https://via.placeholder.com/300x300/000000/ffffff?text=${encodeURIComponent(event.artist)}`
+                }
+                alt={event.artist}
+                className="quick-pick-image"
+              />
               <span className="quick-pick-title">{event.title}</span>
             </div>
           ))}
@@ -96,7 +119,7 @@ const MainContent = ({ currentView, searchQuery }) => {
       <div className="content-section">
         <h2 className="section-title">Trending Events</h2>
         <div className="events-grid">
-          {mockEvents.trending.map((event) => (
+          {events.trending.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>
@@ -105,7 +128,7 @@ const MainContent = ({ currentView, searchQuery }) => {
       <div className="content-section">
         <h2 className="section-title">Based on Your Music Taste</h2>
         <div className="events-grid">
-          {mockEvents.forYou.map((event) => (
+          {events.forYou.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>
@@ -114,7 +137,7 @@ const MainContent = ({ currentView, searchQuery }) => {
       <div className="content-section">
         <h2 className="section-title">Upcoming Concerts</h2>
         <div className="events-grid">
-          {mockEvents.upcoming.map((event) => (
+          {events.upcoming.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>
@@ -129,16 +152,16 @@ const MainContent = ({ currentView, searchQuery }) => {
         <div>
           <h2>Results for "{searchQuery}"</h2>
           <div className="events-grid">
-            {/* Filter events based on search query */}
-            {Object.values(mockEvents).flat()
-              .filter(event => 
-                event.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                event.title.toLowerCase().includes(searchQuery.toLowerCase())
+            {Object.values(events)
+              .flat()
+              .filter(
+                (event) =>
+                  event.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  event.title.toLowerCase().includes(searchQuery.toLowerCase())
               )
-              .map(event => (
+              .map((event) => (
                 <EventCard key={event.id} event={event} />
-              ))
-            }
+              ))}
           </div>
         </div>
       ) : (
@@ -172,7 +195,7 @@ const MainContent = ({ currentView, searchQuery }) => {
           <div className="browse-content">
             <h1>Browse Events</h1>
             <div className="events-grid">
-              {Object.values(mockEvents).flat().map(event => (
+              {Object.values(events).flat().map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
             </div>
@@ -190,11 +213,7 @@ const MainContent = ({ currentView, searchQuery }) => {
     }
   };
 
-  return (
-    <div className="main-content">
-      {renderContent()}
-    </div>
-  );
+  return <div className="main-content">{renderContent()}</div>;
 };
 
 export default MainContent;
