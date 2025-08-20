@@ -16,10 +16,27 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, just redirect to homepage
-    navigate('/home');
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      navigate('/home');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,6 +53,7 @@ const Login = () => {
           </div>
           
           <form className="auth-form" onSubmit={handleSubmit}>
+            {error && <div className="auth-error">{error}</div>}
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -62,8 +80,8 @@ const Login = () => {
               />
             </div>
             
-            <button type="submit" className="auth-button">
-              Sign In
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
           

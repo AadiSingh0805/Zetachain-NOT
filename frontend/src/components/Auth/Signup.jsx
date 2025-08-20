@@ -18,10 +18,31 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, just redirect to homepage
-    navigate('/home');
+    setError('');
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Signup failed');
+      navigate('/home');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,6 +59,7 @@ const Signup = () => {
           </div>
           
           <form className="auth-form" onSubmit={handleSubmit}>
+            {error && <div className="auth-error">{error}</div>}
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -90,8 +112,8 @@ const Signup = () => {
               />
             </div>
             
-            <button type="submit" className="auth-button">
-              Create Account
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? 'Creating...' : 'Create Account'}
             </button>
           </form>
           
