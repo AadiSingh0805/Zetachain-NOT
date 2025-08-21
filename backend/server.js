@@ -1,4 +1,3 @@
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
@@ -8,6 +7,7 @@ import connectDB from './db/connectDB.js';
 import fanRoutes from './routes/fanRoutes.js';
 import artistRoutes from './routes/artistRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ connectDB(mongoUri);
 app.use('/api/auth', authRoutes);
 app.use('/api/fans', fanRoutes);
 app.use('/api/artists', artistRoutes);
+app.use('/api/events', eventRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
