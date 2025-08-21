@@ -17,6 +17,8 @@ const Login = () => {
     setUserData(null);
 
     try {
+      console.log('Sending login request:', { email, password }); // Debugging
+
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/login`, {
         method: 'POST',
         headers: {

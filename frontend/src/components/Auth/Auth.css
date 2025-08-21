@@ -6,6 +6,9 @@
   position: relative;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+input{
+  color: black;
+}
 
 .auth-background {
   position: absolute;
