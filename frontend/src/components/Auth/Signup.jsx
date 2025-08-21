@@ -20,24 +20,33 @@ const Signup = () => {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [role, setRole] = useState('fan'); // Default role is 'fan'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setMessage('');
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, password: formData.password })
+        body: JSON.stringify({ email: formData.email, password: formData.password, role })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Signup failed');
-      navigate('/home');
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(`Signup successful! Welcome, ${role}.`);
+        navigate('/home');
+      } else {
+        setError(data.error || 'Signup failed');
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,6 +69,7 @@ const Signup = () => {
           
           <form className="auth-form" onSubmit={handleSubmit}>
             {error && <div className="auth-error">{error}</div>}
+            {message && <div className="auth-message">{message}</div>}
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input
@@ -110,6 +120,20 @@ const Signup = () => {
                 placeholder="Confirm your password"
                 required
               />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="role">Role</label>
+              <select
+                id="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option value="fan">Fan</option>
+                <option value="artist">Artist</option>
+              </select>
             </div>
             
             <button type="submit" className="auth-button" disabled={loading}>

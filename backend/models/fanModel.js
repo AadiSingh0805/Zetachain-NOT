@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 
 const fanSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  supabaseId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  spotifyId: { type: String, required: true },
-  walletAddress: { type: String, required: true },
+  name: { type: String }, // Optional, can be added later
+  walletAddress: { type: String }, // Optional, can be added later
+  spotifyId: { type: String }, // Optional, can be added later
   listeningTime: { type: Number, default: 0 },
   priorityQueue: [
     {
@@ -14,6 +15,4 @@ const fanSchema = new mongoose.Schema({
   ],
 });
 
-const Fan = mongoose.model('Fan', fanSchema);
-
-export default Fan;
+export default mongoose.model('Fan', fanSchema);

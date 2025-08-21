@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
 const artistSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  supabaseId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  walletAddress: { type: String, required: true },
+  name: { type: String }, // Optional, can be added later
+  walletAddress: { type: String }, // Optional, can be added later
   events: [
     {
       eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event' },
@@ -15,6 +16,4 @@ const artistSchema = new mongoose.Schema({
   ],
 });
 
-const Artist = mongoose.model('Artist', artistSchema);
-
-export default Artist;
+export default mongoose.model('Artist', artistSchema);

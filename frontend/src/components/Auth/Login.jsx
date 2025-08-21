@@ -4,36 +4,41 @@ import './Auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [userData, setUserData] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setMessage('');
+    setUserData(null);
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, password: formData.password })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-      navigate('/home');
-    } catch (err) {
-      setError(err.message);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage(`Login successful! You are logged in as a ${data.role}.`);
+        setUserData(data.data); // Store user-specific data
+        navigate('/home');
+      } else {
+        setMessage(`Login failed: ${data.error}`);
+      }
+    } catch (error) {
+      setMessage(`An error occurred: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -52,16 +57,16 @@ const Login = () => {
             <p className="auth-subtitle">Sign in to your account</p>
           </div>
           
-          <form className="auth-form" onSubmit={handleSubmit}>
-            {error && <div className="auth-error">{error}</div>}
+          <form className="auth-form" onSubmit={handleLogin}>
+            {message && <div className="auth-message">{message}</div>}
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
               />
@@ -73,8 +78,8 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
               />
