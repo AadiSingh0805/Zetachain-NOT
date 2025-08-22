@@ -1,11 +1,12 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const fanSchema = new mongoose.Schema({
   supabaseId: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
-  name: { type: String }, // Optional, can be added later
-  walletAddress: { type: String }, // Optional, can be added later
-  spotifyId: { type: String }, // Optional, can be added later
+  name: { type: String },
+  walletAddress: { type: String },
+  spotifyId: { type: String },
+  spotifyAccessToken: { type: String },
   listeningTime: { type: Number, default: 0 },
   
   // Spotify authentication tokens
@@ -24,4 +25,4 @@ const fanSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.model('Fan', fanSchema);
+module.exports = mongoose.model('Fan', fanSchema);

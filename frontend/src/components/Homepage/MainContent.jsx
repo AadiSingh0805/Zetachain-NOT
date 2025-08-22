@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EventCard from "./EventCard";
+import { useAuth0 } from '@auth0/auth0-react';
 import "./MainContent.css";
 import { fetchArtistImage } from "../../utils/fetchArtistImage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,6 +79,15 @@ const MainContent = ({ currentView, searchQuery }) => {
   };
 
   const [events, setEvents] = useState(initialEvents);
+  const [joinedEventIds, setJoinedEventIds] = useState([]);
+  const { isAuthenticated, user } = useAuth0();
+
+  // Optionally, fetch joined events from backend for the user here
+  // useEffect(() => { ... }, [user]);
+
+  const handleJoinQueue = (eventId) => {
+    setJoinedEventIds((prev) => [...prev, eventId]);
+  };
 
   useEffect(() => {
     const loadImages = async () => {
@@ -125,7 +135,12 @@ const MainContent = ({ currentView, searchQuery }) => {
         <h2 className="section-title">Trending Events</h2>
         <div className="events-grid">
           {events.trending.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              joinedEventIds={joinedEventIds}
+              onJoinQueue={handleJoinQueue}
+            />
           ))}
         </div>
       </div>
@@ -134,7 +149,12 @@ const MainContent = ({ currentView, searchQuery }) => {
         <h2 className="section-title">Based on Your Music Taste</h2>
         <div className="events-grid">
           {events.forYou.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              joinedEventIds={joinedEventIds}
+              onJoinQueue={handleJoinQueue}
+            />
           ))}
         </div>
       </div>
@@ -143,7 +163,12 @@ const MainContent = ({ currentView, searchQuery }) => {
         <h2 className="section-title">Upcoming Concerts</h2>
         <div className="events-grid">
           {events.upcoming.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard
+              key={event.id}
+              event={event}
+              joinedEventIds={joinedEventIds}
+              onJoinQueue={handleJoinQueue}
+            />
           ))}
         </div>
       </div>

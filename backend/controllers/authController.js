@@ -1,8 +1,8 @@
-import supabase from '../db/supabaseClient.js';
-import Fan from '../models/fanModel.js';
-import Artist from '../models/artistModel.js';
+const supabase = require('../db/supabaseClient.js');
+const Fan = require('../models/fanModel.js');
+const Artist = require('../models/artistModel.js');
 
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   const { email, password, role } = req.body;
 
   // Validate required fields
@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   // Validate required fields
@@ -68,4 +68,9 @@ export const login = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: 'Internal server error' });
   }
+};
+
+module.exports = {
+  signup,
+  login
 };

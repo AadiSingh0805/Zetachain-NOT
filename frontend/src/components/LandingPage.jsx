@@ -268,6 +268,13 @@ const LandingPage = () => {
                 Link your Spotify account to track your listening time and build
                 your fan score.
               </p>
+              <button
+                className="spotify-auth-btn"
+                style={{ marginTop: '1rem' }}
+                onClick={() => navigate('/connect-spotify')}
+              >
+                Connect Spotify
+              </button>
             </div>
           </ScrollStackItem>
           <ScrollStackItem>

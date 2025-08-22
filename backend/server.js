@@ -1,8 +1,3 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import connectDB from './db/connectDB.js';
 
 import fanRoutes from './routes/fanRoutes.js';
 import artistRoutes from './routes/artistRoutes.js';
@@ -17,7 +12,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
   credentials: true
 }));
 app.use(bodyParser.json());

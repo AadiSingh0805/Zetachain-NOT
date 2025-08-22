@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const artistSchema = new mongoose.Schema({
   supabaseId: { type: String, required: true, unique: true },
@@ -16,4 +16,4 @@ const artistSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model('Artist', artistSchema);
+module.exports = mongoose.model('Artist', artistSchema);

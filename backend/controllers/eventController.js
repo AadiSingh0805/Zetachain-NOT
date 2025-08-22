@@ -1,7 +1,7 @@
-import Event from '../models/eventModel.js';
+const Event = require('../models/eventModel.js');
 
 // Create a new event
-export const createEvent = async (req, res) => {
+const createEvent = async (req, res) => {
   try {
     const event = await Event.create(req.body);
     res.status(201).json(event);
@@ -11,7 +11,7 @@ export const createEvent = async (req, res) => {
 };
 
 // Get all events
-export const getAllEvents = async (req, res) => {
+const getAllEvents = async (req, res) => {
   try {
     const events = await Event.find().populate('artist');
     res.status(200).json(events);
@@ -21,7 +21,7 @@ export const getAllEvents = async (req, res) => {
 };
 
 // Get a single event
-export const getEventById = async (req, res) => {
+const getEventById = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id).populate('artist');
     if (!event) {
@@ -34,7 +34,7 @@ export const getEventById = async (req, res) => {
 };
 
 // Update an event
-export const updateEvent = async (req, res) => {
+const updateEvent = async (req, res) => {
   try {
     const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!event) {
@@ -47,7 +47,7 @@ export const updateEvent = async (req, res) => {
 };
 
 // Delete an event
-export const deleteEvent = async (req, res) => {
+const deleteEvent = async (req, res) => {
   try {
     const event = await Event.findByIdAndDelete(req.params.id);
     if (!event) {
@@ -57,4 +57,11 @@ export const deleteEvent = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+module.exports = {
+  createEvent,
+  getAllEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent
 };
