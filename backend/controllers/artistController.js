@@ -1,7 +1,7 @@
-import Artist from '../models/artistModel.js';
+const Artist = require('../models/artistModel.js');
 
 // Create a new artist
-export const createArtist = async (req, res) => {
+const createArtist = async (req, res) => {
   try {
     const artist = new Artist(req.body);
     await artist.save();
@@ -12,7 +12,7 @@ export const createArtist = async (req, res) => {
 };
 
 // Get all artists
-export const getArtists = async (req, res) => {
+const getArtists = async (req, res) => {
   try {
     const artists = await Artist.find();
     res.status(200).json(artists);
@@ -22,7 +22,7 @@ export const getArtists = async (req, res) => {
 };
 
 // Get a single artist by ID
-export const getArtistById = async (req, res) => {
+const getArtistById = async (req, res) => {
   try {
     const artist = await Artist.findById(req.params.id);
     if (!artist) return res.status(404).json({ message: 'Artist not found' });
@@ -33,7 +33,7 @@ export const getArtistById = async (req, res) => {
 };
 
 // Update an artist by ID
-export const updateArtist = async (req, res) => {
+const updateArtist = async (req, res) => {
   try {
     const artist = await Artist.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -47,7 +47,7 @@ export const updateArtist = async (req, res) => {
 };
 
 // Delete an artist by ID
-export const deleteArtist = async (req, res) => {
+const deleteArtist = async (req, res) => {
   try {
     const artist = await Artist.findByIdAndDelete(req.params.id);
     if (!artist) return res.status(404).json({ message: 'Artist not found' });
@@ -55,4 +55,11 @@ export const deleteArtist = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+module.exports = {
+  createArtist,
+  getArtists,
+  getArtistById,
+  updateArtist,
+  deleteArtist
 };

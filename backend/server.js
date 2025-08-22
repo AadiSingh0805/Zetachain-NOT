@@ -1,13 +1,14 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import connectDB from './db/connectDB.js';
 
-import fanRoutes from './routes/fanRoutes.js';
-import artistRoutes from './routes/artistRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-import eventRoutes from './routes/eventRoutes.js';
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const connectDB = require('./db/connectDB.js');
+
+const fanRoutes = require('./routes/fanRoutes.js');
+const artistRoutes = require('./routes/artistRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
+const eventRoutes = require('./routes/eventRoutes.js');
 
 dotenv.config();
 
@@ -16,7 +17,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
   credentials: true
 }));
 app.use(bodyParser.json());

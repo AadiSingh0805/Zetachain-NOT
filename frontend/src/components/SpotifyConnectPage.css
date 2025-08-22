@@ -1,0 +1,45 @@
+.spotify-connect-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #181c2b 0%, #232946 100%);
+}
+
+.spotify-connect-card {
+  background: #232946;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+
+.spotify-connect-card h2 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.spotify-connect-card p {
+  margin-bottom: 2rem;
+  color: #b8c1ec;
+}
+
+.spotify-auth-btn {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.spotify-auth-btn:hover {
+  background: #1ed760;
+}
