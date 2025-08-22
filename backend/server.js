@@ -1,14 +1,9 @@
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./db/connectDB.js');
-
-const fanRoutes = require('./routes/fanRoutes.js');
-const artistRoutes = require('./routes/artistRoutes.js');
-const authRoutes = require('./routes/authRoutes.js');
-const eventRoutes = require('./routes/eventRoutes.js');
+import fanRoutes from './routes/fanRoutes.js';
+import artistRoutes from './routes/artistRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
+import nftRoutes from './routes/nftRoutes.js';
 
 dotenv.config();
 
@@ -36,6 +31,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/fans', fanRoutes);
 app.use('/api/artists', artistRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api', nftRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
